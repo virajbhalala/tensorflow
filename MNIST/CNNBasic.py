@@ -1,7 +1,7 @@
-import ssl
-ssl._create_default_https_context = ssl._create_unverified_context
-
-#tensorboard --logdir=/tmp/mnist_convnet_model/
+# import ssl
+# ssl._create_default_https_context = ssl._create_unverified_context
+#
+# #tensorboard --logdir=/tmp/mnist_convnet_model/
 
 from __future__ import absolute_import
 from __future__ import division
@@ -69,7 +69,7 @@ def cnn_model_fn(features, labels, mode):
 
   # Add dropout operation; 0.6 probability that element will be kept
   dropout = tf.layers.dropout(
-      inputs=dense, rate=0.4, training=mode == tf.estimator.ModeKeys.TRAIN)
+      inputs=dense, rate=0.9, training=mode == tf.estimator.ModeKeys.TRAIN)
 
   # Logits layer
   # Input Tensor Shape: [batch_size, 1024]
@@ -156,7 +156,7 @@ def main(unused_argv):
       shuffle=True)
   mnist_classifier.train(
       input_fn=train_input_fn,
-      steps=800,
+      steps=100,
       hooks=[logging_hook])
 
 # Evaluate the model and print results

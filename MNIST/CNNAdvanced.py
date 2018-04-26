@@ -1,3 +1,4 @@
+#uses AdamOptimizer and has dynamic drop probability
 
 from tensorflow.examples.tutorials.mnist import input_data
 
@@ -80,7 +81,7 @@ y_ = tf.placeholder(tf.float32, [None, 10])
 
 # (40000,784) => (40000,28,28,1)
 x_image = tf.reshape(x, [-1,28,28,1])
-
+#[filter_height, filter_width, input_channels, output_channels]
 W_conv1 = weight_variable([5, 5, 1, 32])
 b_conv1 = bias_variable([32])
 h_conv1 = tf.nn.relu(conv2d(x_image, W_conv1) + b_conv1)
