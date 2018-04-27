@@ -48,8 +48,9 @@ import cifar10_input
 FLAGS = tf.app.flags.FLAGS
 
 # Basic model parameters.
-tf.app.flags.DEFINE_integer('batch_size', 128,
-                            """Number of images to process in a batch.""")
+tf.app.flags.DEFINE_integer('batch_size', 100,"""Number of images to process in a batch.""")
+#tf.app.flags.DEFINE_integer('batch_size', 128,"""Number of images to process in a batch.""")
+
 tf.app.flags.DEFINE_string('data_dir', '/tmp/cifar10_data',
                            """Path to the CIFAR-10 data directory.""")
 tf.app.flags.DEFINE_boolean('use_fp16', False,
@@ -75,6 +76,12 @@ TOWER_NAME = 'tower'
 
 DATA_URL = 'https://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz'
 
+def accuracy(logits, labels):
+  labels = tf.cast(labels, tf.int64)
+  correct_prediction = tf.equal(tf.argmax(logits,1), labels)
+  accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32), name='accuracy')
+  tf.add_to_collection('losses', accuracy)
+  return tf.add_n(tf.get_collection('losses'), name='accuracy')
 
 def _activation_summary(x):
   """Helper to create summaries for activations.
@@ -184,7 +191,12 @@ def inputs(eval_data):
     labels = tf.cast(labels, tf.float16)
   return images, labels
 
-
+# def accuracy(logits, labels):
+#
+#   # Calculate the average cross entropy loss across the batch.
+#   labels = tf.cast(labels, tf.int64)
+#   accuracy = tf.metrics.accuracy(labels= labels, predictions=logits,name='accuracy_per_example')
+#   return accuracy
 def inference(images):
   """Build the CIFAR-10 model.
 
@@ -267,6 +279,7 @@ def inference(images):
                               tf.constant_initializer(0.0))
     softmax_linear = tf.add(tf.matmul(local4, weights), biases, name=scope.name)
     _activation_summary(softmax_linear)
+  # tf.summary.scalar('accuracy', accuracy(softmax_linear,labels))
 
   return softmax_linear
 
@@ -293,6 +306,7 @@ def loss(logits, labels):
   # The total loss is defined as the cross entropy loss plus all of the weight
   # decay terms (L2 loss).
   return tf.add_n(tf.get_collection('losses'), name='total_loss')
+
 
 
 def _add_loss_summaries(total_loss):
