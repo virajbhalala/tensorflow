@@ -54,12 +54,7 @@ tf.app.flags.DEFINE_boolean('log_device_placement', False,
                             """Whether to log device placement.""")
 tf.app.flags.DEFINE_integer('log_frequency', 10,
                             """How often to log results to the console.""")
-def accuracyTrain(logits, labels):
-  labels = tf.cast(labels, tf.int64)
-  correct_prediction = tf.equal(tf.argmax(logits,1), labels)
-  accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32), name='accuracy')
-  tf.add_to_collection('losses', accuracy)
-  return tf.add_n(tf.get_collection('losses'), name='accuracy')
+
 
 def train():
   """Train CIFAR-10 for a number of steps."""
@@ -75,7 +70,7 @@ def train():
     # Build a Graph that computes the logits predictions from the
     # inference model.
     logits = cifar10.inference(images)
-    accuracy = accuracyTrain(logits, labels)
+    accuracy = cifar10.accuracy(logits, labels)
 
     # Calculate loss.
 

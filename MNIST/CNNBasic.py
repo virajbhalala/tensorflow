@@ -144,7 +144,16 @@ def main(unused_argv):
   # Log the values in the "Softmax" tensor with label "probabilities"
   tensors_to_log = {"probabilities": "softmax_tensor"}
   logging_hook = tf.train.LoggingTensorHook(
-      tensors=tensors_to_log, every_n_iter=50)
+      tensors=tensors_to_log, every_n_iter=
+          for i in range(20):
+        mnist_classifier.train(
+            input_fn=train_input_fn,
+            steps=100,
+            hooks=[logging_hook])
+            # hooks = [logging_hook])
+
+        eval_results = mnist_classifier.evaluate(input_fn=eval_input_fn)
+        print(eval_results))
 
 
   # Train the model
@@ -154,33 +163,36 @@ def main(unused_argv):
       batch_size=100,
       num_epochs=None,
       shuffle=True)
-  mnist_classifier.train(
-      input_fn=train_input_fn,
-      steps=100,
-      hooks=[logging_hook])
+  # mnist_classifier.train(
+  #     input_fn=train_input_fn,
+  #     steps=100,
+  #     hooks=[logging_hook])
 
-# Evaluate the model and print results
-#   eval_input_fn = tf.estimator.inputs.numpy_input_fn(
-#       x={"x": eval_data},
-#       y=eval_labels,
-#       num_epochs=1,
-#       shuffle=False)
-#   eval_results = mnist_classifier.evaluate(input_fn=eval_input_fn)
-
-
+#Evaluate the model and print results
   eval_input_fn = tf.estimator.inputs.numpy_input_fn(
       x={"x": eval_data},
       y=eval_labels,
-      batch_size= 100,
-      num_epochs=None,
+      num_epochs=1,
       shuffle=False)
 
+  # eval_input_fn = tf.estimator.inputs.numpy_input_fn(
+  #     x={"x": eval_data},
+  #     y=eval_labels,
+  #     batch_size= 100,
+  #     num_epochs=None,
+  #     shuffle=False)
 
-  return mnist_classifier.evaluate(
-      input_fn=eval_input_fn,
-      steps = 800,
-      hooks=[logging_hook]
-  )
+ #eval_results = mnist_classifier.evaluate(input_fn=eval_input_fn)
+
+  for i in range(200):
+      mnist_classifier.train(
+          input_fn=train_input_fn,
+          steps=100,
+          hooks=[logging_hook])
+
+    eval_results = mnist_classifier.evaluate(input_fn=eval_input_fn)
+    print(eval_results)
+
 
 
 if __name__ == "__main__":

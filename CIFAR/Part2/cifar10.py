@@ -75,7 +75,12 @@ INITIAL_LEARNING_RATE = 0.1       # Initial learning rate.
 TOWER_NAME = 'tower'
 
 DATA_URL = 'https://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz'
-
+def accuracy(logits, labels):
+  labels = tf.cast(labels, tf.int64)
+  correct_prediction = tf.equal(tf.argmax(logits,1), labels)
+  accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32), name='accuracy')
+  tf.add_to_collection('losses', accuracy)
+  return tf.add_n(tf.get_collection('losses'), name='accuracy')
 
 def _activation_summary(x):
   """Helper to create summaries for activations.
