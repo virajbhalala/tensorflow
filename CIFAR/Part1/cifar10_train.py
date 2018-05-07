@@ -49,7 +49,7 @@ tf.app.flags.DEFINE_string('train_dir', '/tmp/cifar10_train',
                            """Directory where to write event logs """
                            """and checkpoint.""")
 # adding 1 will run 3000th batch
-tf.app.flags.DEFINE_integer('max_steps', 2001,
+tf.app.flags.DEFINE_integer('max_steps', 10001,
                             """Number of batches to run.""")
 tf.app.flags.DEFINE_boolean('log_device_placement', False,
                             """Whether to log device placement.""")
