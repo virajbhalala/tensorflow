@@ -48,11 +48,12 @@ FLAGS = tf.app.flags.FLAGS
 tf.app.flags.DEFINE_string('train_dir', '/tmp/cifar10_train',
                            """Directory where to write event logs """
                            """and checkpoint.""")
-tf.app.flags.DEFINE_integer('max_steps', 1000,
+# adding 1 will run 3000th batch
+tf.app.flags.DEFINE_integer('max_steps', 30001,
                             """Number of batches to run.""")
 tf.app.flags.DEFINE_boolean('log_device_placement', False,
                             """Whether to log device placement.""")
-tf.app.flags.DEFINE_integer('log_frequency', 10,
+tf.app.flags.DEFINE_integer('log_frequency', 100,
                             """How often to log results to the console.""")
 
 
@@ -70,7 +71,7 @@ def train():
     # Build a Graph that computes the logits predictions from the
     # inference model.
     logits = cifar10.inference(images)
-    accuracy = cifar10.accuracy(logits, labels)
+    trainaccuracy = cifar10.accuracy(logits, labels)
 
     # Calculate loss.
 
@@ -106,11 +107,12 @@ def train():
           print (format_str % (datetime.now(), self._step, loss_value,
                                examples_per_sec, sec_per_batch))
 
+    save_checkpoint_hook = tf.train.CheckpointSaverHook(checkpoint_dir=FLAGS.train_dir,save_steps=100)
     with tf.train.MonitoredTrainingSession(
         checkpoint_dir=FLAGS.train_dir,
         hooks=[tf.train.StopAtStepHook(last_step=FLAGS.max_steps),
                tf.train.NanTensorHook(loss),
-               _LoggerHook()],
+               _LoggerHook(), save_checkpoint_hook],
         config=tf.ConfigProto(
             log_device_placement=FLAGS.log_device_placement)) as mon_sess:
       while not mon_sess.should_stop():

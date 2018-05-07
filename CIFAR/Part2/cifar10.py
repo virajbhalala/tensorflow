@@ -48,8 +48,8 @@ import cifar10_input
 FLAGS = tf.app.flags.FLAGS
 
 # Basic model parameters.
-tf.app.flags.DEFINE_integer('batch_size', 100,"""Number of images to process in a batch.""")
-#tf.app.flags.DEFINE_integer('batch_size', 128,"""Number of images to process in a batch.""")
+#tf.app.flags.DEFINE_integer('batch_size', 100,"""Number of images to process in a batch.""")
+tf.app.flags.DEFINE_integer('batch_size', 128,"""Number of images to process in a batch.""")
 
 tf.app.flags.DEFINE_string('data_dir', '/tmp/cifar10_data',
                            """Path to the CIFAR-10 data directory.""")
@@ -75,6 +75,7 @@ INITIAL_LEARNING_RATE = 0.1       # Initial learning rate.
 TOWER_NAME = 'tower'
 
 DATA_URL = 'https://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz'
+
 def accuracy(logits, labels):
   labels = tf.cast(labels, tf.int64)
   correct_prediction = tf.equal(tf.argmax(logits,1), labels)
