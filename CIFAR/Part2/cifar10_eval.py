@@ -53,7 +53,7 @@ tf.app.flags.DEFINE_string('checkpoint_dir', '/tmp/cifar10_train',
                            """Directory where to read model checkpoints.""")
 #https://piazza.com/class/jchzguhsowz6n9?cid=1586
 #train set usually takes >2 min to process 1 batch of 100 datapoints
-tf.app.flags.DEFINE_integer('eval_interval_secs', 4,
+tf.app.flags.DEFINE_integer('eval_interval_secs', 6,
                             """How often to run the eval.""")
 tf.app.flags.DEFINE_integer('num_examples', 10000,
                             """Number of examples to run.""")
