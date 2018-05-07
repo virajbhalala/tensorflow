@@ -236,7 +236,7 @@ def inference(images):
     _activation_summary(conv1)
 
   # pool1
-  pool1 = tf.nn.max_pool(conv1, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1],
+  pool1 = tf.nn.max_pool(conv1, ksize=[1, 4, 4, 1], strides=[1, 2, 2, 1],
                          padding='SAME', name='pool1')
   # norm1
   norm1 = tf.nn.lrn(pool1, 4, bias=1.0, alpha=0.001 / 9.0, beta=0.75,
@@ -258,7 +258,7 @@ def inference(images):
   norm2 = tf.nn.lrn(conv2, 4, bias=1.0, alpha=0.001 / 9.0, beta=0.75,
                     name='norm2')
   # pool2
-  pool2 = tf.nn.max_pool(norm2, ksize=[1, 2, 2, 1],
+  pool2 = tf.nn.max_pool(norm2, ksize=[1, 4, 4, 1],
                          strides=[1, 2, 2, 1], padding='SAME', name='pool2')
 ###################
   # conv3
@@ -277,7 +277,7 @@ def inference(images):
   norm3 = tf.nn.lrn(conv3, 4, bias=1.0, alpha=0.001 / 9.0, beta=0.75,
                     name='norm2')
   # pool3
-  pool3 = tf.nn.max_pool(norm3, ksize=[1, 2, 2, 1],
+  pool3 = tf.nn.max_pool(norm3, ksize=[1, 4, 4, 1],
                          strides=[1, 2, 2, 1], padding='SAME', name='pool3')
 
   # conv4
@@ -296,7 +296,7 @@ def inference(images):
   norm4 = tf.nn.lrn(conv4, 4, bias=1.0, alpha=0.001 / 9.0, beta=0.75,
                     name='norm2')
   # pool4
-  pool4 = tf.nn.max_pool(norm4, ksize=[1, 2, 2, 1],
+  pool4 = tf.nn.max_pool(norm4, ksize=[1, 4, 4, 1],
                          strides=[1, 2, 2, 1], padding='SAME', name='pool4')
 
 
